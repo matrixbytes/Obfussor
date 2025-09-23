@@ -1,18 +1,31 @@
-# C, CPP Obfucator
+# Obfucc-LLVM
 
-Application software to obfuscate the object file using Low Level Virtual Machine (LLVM).
+Obfucc-LLVM is a high-performance binary obfuscation framework that leverages LLVM's compiler infrastructure to transform source code into hardened, reverse-engineering-resistant binaries. Built for scenarios where intellectual property protection is non-negotiable.
 
-Software obfuscation has become an essential technique in modern software engineering, particularly in the domain where intellectual property protection, reverse engineering prevention and software piracy mitigation is critical.
+## Feature goals
 
-LLVM (Low Level Virtual Machine) is widely used compiler infrastructure that provides a modular and reusable compiler and toolchain technique. The project plans to use LLVM as a tool to compile and generate obfuscated object code from a given source code.
+### Obfuscation Techniques
 
-## Output
+- **Control Flow Flattening** - Transforms natural program flow into opaque, non-linear execution paths
+- **String Encryption** - Automatic encryption of all string literals with runtime decryption
+- **Bogus Code Injection** - Insertion of dead code paths that are computationally indistinguishable from real logic
+- **Instruction Substitution** - Replace simple instructions with semantically equivalent but complex alternatives
+- **Function Inlining/Outlining** - Strategic manipulation of function boundaries to obscure program structure
 
-Generation of report which
+### Characteristics
 
-- Logs all the input parameters
-- Logs all the attributes of output file including size, method of obfuscation etc
-- Give brief information about the amount of bogus code generated
-- Provides details on number of cycles of obfuscation completed
-- Number of string obfuscation/encryption done
-- Number of fake look inserted
+- **Zero-overhead abstractions** - Obfuscation applied at IR level ensures minimal runtime penalty
+- **Configurable intensity levels** - Fine-tune the security/performance tradeoff
+- **Resource-efficient** - Optimized for constrained environments (tested on mid-range hardware)
+
+## Performance Metrics & Reports
+
+The obfuscation engine generates comprehensive reports including:
+
+### Obfuscation Metrics
+
+- **Control Flow Complexity** - Cyclomatic complexity increase factor
+- **String Protection Coverage** - Percentage of strings encrypted
+- **Code Inflation Ratio** - Size increase due to obfuscation
+- **Bogus Code Distribution** - Statistical analysis of injected code
+- **Entropy Analysis** - Information-theoretic metrics of output randomness
