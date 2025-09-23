@@ -1,10 +1,12 @@
 {
   description = "Tauri development environment";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     rust-overlay.url = "github:oxalica/rust-overlay";
   };
+
   outputs = {
     self,
     nixpkgs,
@@ -12,34 +14,52 @@
     rust-overlay,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
+
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [rust-overlay.overlays.default];
+        overlays = [ rust-overlay.overlays.default ];
       };
+      llvmPkgs = pkgs.llvmPackages_latest;
+
     in {
       devShells.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
           pkg-config
-          gobject-introspection
+          cmake
+          ninja
+
+          # explicit LLVM derivations
+          llvmPkgs.clang
+          llvmPkgs.llvm
+          llvmPkgs.lld
+          mold
+
+          rustc
           cargo
           cargo-tauri
-          zulu17
-          # nodejs
+          nodejs
+          bun
+          openjdk17
+
+          python3
+          clang-tools
         ];
+
         buildInputs = with pkgs; [
-          at-spi2-atk
-          atkmm
+          gtk3
+          webkitgtk_4_1
+          openssl
+          librsvg
+          libsoup_3
+
+          # explicit runtime GUI deps
+          pango
           cairo
           gdk-pixbuf
           glib
-          gtk3
           harfbuzz
-          librsvg
-          libsoup_3
-          pango
-          webkitgtk_4_1
-          openssl
         ];
+        
         shellHook = ''
           # Essential library path
           export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath (with pkgs; [
