@@ -116,12 +116,6 @@ jobs:
           }
         shell: pwsh
 
-      - name: Run smoke tests (Unix)
-        if: runner.os != 'Windows'
-        run: bash tests/run_smoke.sh
-        shell: bash
-
-
       - name: Normalize built obfucc (Unix)
         if: runner.os != 'Windows'
         run: |
@@ -143,6 +137,11 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           echo "$GITHUB_WORKSPACE/build" >> $GITHUB_PATH
+        shell: bash
+
+      - name: Run smoke tests (Unix)
+        if: runner.os != 'Windows'
+        run: bash tests/run_smoke.sh
         shell: bash
 
       - name: Run smoke tests (Windows)
