@@ -17,21 +17,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up LLVM
+      - name: Install LLVM (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y llvm-15 clang-15
+        shell: bash
+
+      - name: Install LLVM (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew update || true
+          brew install llvm@15 || true
+          # Add brew llvm to PATH for the remainder of the job
+          echo "$(brew --prefix llvm@15)/bin" >> "$GITHUB_PATH"
+        shell: bash
+
+      - name: Install LLVM (Windows)
+        if: runner.os == 'Windows'
         uses: KyleMayes/install-llvm-action@v2
         with:
           version: 15
           env: true
 
-      - name: Add LLVM to PATH (Windows)
-        if: runner.os == 'Windows'
+      - name: LLVM diagnostics
         run: |
-          echo "$env:LLVM_PATH\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        shell: pwsh
-
-      - name: Add LLVM to PATH (Unix)
-        if: runner.os != 'Windows'
-        run: echo "$LLVM_PATH/bin" >> "$GITHUB_PATH"
+          echo "=== llvm-as --version ==="
+          llvm-as --version || true
+          echo "=== FileCheck --version ==="
+          FileCheck --version || true
+        shell: bash
 
       - name: Build tiny test obfucc (Unix)
         if: runner.os != 'Windows'
@@ -50,7 +65,7 @@ jobs:
 
       - name: Run smoke tests (Windows)
         if: runner.os == 'Windows'
-        run: pwsh -File tests/run_smoke.ps1
+        run: pwsh -File tests/run_smoke.ps1 -Obfucc build\Release\obfucc.exe
         shell: pwsh
 
       - name: Run regression tests (Unix)
@@ -60,7 +75,7 @@ jobs:
 
       - name: Run regression tests (Windows)
         if: runner.os == 'Windows'
-        run: pwsh -File tests/run_regressions.ps1
+        run: pwsh -File tests/run_regressions.ps1 -Obfucc build\Release\obfucc.exe
         shell: pwsh
 
   build-only:
