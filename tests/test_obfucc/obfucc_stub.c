@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 int main(int argc, char** argv) {
     const char *input = NULL;
@@ -64,15 +65,23 @@ int main(int argc, char** argv) {
         const char *needle = "SecretString";
         const char *replacement = "<ENCRYPTED>";
         char *p = buf;
-        int rep_len = (int)strlen(replacement);
-        // naive in-place replacement: write to a new buffer
-    size_t outcap = (size_t)sz + (size_t)rep_len * 8 + 1024;
-    /* detect overflow in capacity calculation */
-    if (outcap < (size_t)sz || outcap < (size_t)rep_len) {
+        size_t rep_len = strlen(replacement);
+        size_t needle_len = strlen(needle);
+        /* naive in-place replacement: write to a new buffer */
+    size_t outcap = (size_t)sz;
+    /* overflow-safe capacity calculation: (sz) + (rep_len*8) + 1024 */
+    if (rep_len > SIZE_MAX / 8) {
         free(buf);
         fprintf(stderr, "ERROR: output buffer size overflow\n");
         return 5;
     }
+    size_t add = rep_len * 8 + 1024;
+    if (outcap > SIZE_MAX - add) {
+        free(buf);
+        fprintf(stderr, "ERROR: output buffer size overflow\n");
+        return 5;
+    }
+    outcap += add;
     char *outbuf = (char*)malloc(outcap);
     if (!outbuf) { free(buf); fprintf(stderr, "ERROR: malloc failed\n"); return 5; }
     char *dst = outbuf;
@@ -80,7 +89,15 @@ int main(int argc, char** argv) {
     while (*p) {
         char *found = strstr(p, needle);
         if (!found) {
-            strcpy(dst, p);
+            size_t rem = strlen(p);
+            if ((size_t)(dst - outbuf) > outcap - (rem + 1)) {
+                free(buf);
+                free(outbuf);
+                fprintf(stderr, "ERROR: output buffer overflow during final copy\n");
+                return 5;
+            }
+            memcpy(dst, p, rem + 1); /* includes NUL */
+            dst += rem;
             copied_remainder = true;
             break;
         }
