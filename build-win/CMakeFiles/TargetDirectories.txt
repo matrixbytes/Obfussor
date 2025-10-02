@@ -1,4 +1,0 @@
-C:/Users/HP/Obfussor/build-win/CMakeFiles/obfucc_test.dir
-C:/Users/HP/Obfussor/build-win/CMakeFiles/INSTALL.dir
-C:/Users/HP/Obfussor/build-win/CMakeFiles/ALL_BUILD.dir
-C:/Users/HP/Obfussor/build-win/CMakeFiles/ZERO_CHECK.dir
