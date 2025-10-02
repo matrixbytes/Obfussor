@@ -22,19 +22,31 @@ android {
             keyAlias getEnvOrDefault('DEBUG_KEY_ALIAS', 'androiddebugkey')
             keyPassword getEnvOrDefault('DEBUG_KEY_PASSWORD', 'android')
         }
-        release {
-            storeFile file(getEnvOrDefault('RELEASE_KEYSTORE', ''))
-            storePassword getEnvOrDefault('RELEASE_KEYSTORE_PASSWORD', '')
-            keyAlias getEnvOrDefault('RELEASE_KEY_ALIAS', '')
-            keyPassword getEnvOrDefault('RELEASE_KEY_PASSWORD', '')
+
+        if (System.getenv('RELEASE_KEYSTORE') &&
++            System.getenv('RELEASE_KEYSTORE_PASSWORD') &&
++            System.getenv('RELEASE_KEY_ALIAS') &&
++            System.getenv('RELEASE_KEY_PASSWORD')) {
++            release {
++                storeFile file(System.getenv('RELEASE_KEYSTORE'))
++                storePassword System.getenv('RELEASE_KEYSTORE_PASSWORD')
++                keyAlias System.getenv('RELEASE_KEY_ALIAS')
++                keyPassword System.getenv('RELEASE_KEY_PASSWORD')
++            }
         }
     }
+    
+    
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            signingConfig signingConfigs.release
+            if (signingConfigs.findByName('release') != null) {
++                signingConfig signingConfigs.release
++            } else {
++                println("Warning: Release signing not configured; building unsigned release artifact.")
++            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
