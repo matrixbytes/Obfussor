@@ -1,0 +1,10 @@
+# Check that control flow flattening produced a dispatcher-style switch or loop.
+# Use function label anchoring to reduce false positives.
+
+# CHECK-LABEL: define {{.*}} @main(
+# CHECK:       entry:
+# CHECK:       br label %{{[0-9]+}}
+# CHECK:       switch i32 %{{[0-9]+}}, label %{{[a-zA-Z0-9_.]+}} \[
+# CHECK:       \]
+# CHECK:       phi i32
+# CHECK: @dispatcher

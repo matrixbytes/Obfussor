@@ -1,0 +1,83 @@
+name: Obfucc-LLVM CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up LLVM
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: 15
+          env: true
+
+      - name: Add LLVM to PATH (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo "$env:LLVM_PATH\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Add LLVM to PATH (Unix)
+        if: runner.os != 'Windows'
+        run: echo "$LLVM_PATH/bin" >> "$GITHUB_PATH"
+
+      - name: Run smoke tests
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            pwsh tests/run_smoke.ps1
+          else
+            bash tests/run_smoke.sh
+          fi
+        shell: bash
+
+      - name: Run regression tests
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            pwsh tests/run_regressions.ps1
+          else
+            bash tests/run_regressions.sh
+          fi
+        shell: bash
+
+  build-only:
+    name: Build-only on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up LLVM
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: 15
+          env: true
+
+      - name: Add LLVM to PATH (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo "$env:LLVM_PATH\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Add LLVM to PATH (Unix)
+        if: runner.os != 'Windows'
+        run: echo "$LLVM_PATH/bin" >> "$GITHUB_PATH"
+
+      - name: Run build-only harness
+        run: |
+          python tests/runner.py --build-only
+        shell: bash
