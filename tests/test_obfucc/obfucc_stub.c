@@ -66,12 +66,14 @@ int main(int argc, char** argv) {
     char *outbuf = (char*)malloc(outcap);
     if (!outbuf) { free(buf); return 5; }
     char *dst = outbuf;
-        while (*p) {
-            char *found = strstr(p, needle);
-            if (!found) {
-                strcpy(dst, p);
-                break;
-            }
+    bool copied_remainder = false;
+    while (*p) {
+        char *found = strstr(p, needle);
+        if (!found) {
+            strcpy(dst, p);
+            copied_remainder = true;
+            break;
+        }
             size_t before = found - p;
             memcpy(dst, p, before);
             dst += before;
@@ -79,7 +81,11 @@ int main(int argc, char** argv) {
             dst += rep_len;
             p = found + strlen(needle);
         }
-        // write outbuf to file
+        if (!copied_remainder) {
+            /* ensure the buffer is NUL terminated before calling strlen */
+            *dst = '\0';
+        }
+        /* write outbuf to file */
     FILE *out = fopen(output, "wb");
     if (!out) { free(buf); free(outbuf); return 6; }
     size_t outlen = strlen(outbuf);

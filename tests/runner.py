@@ -199,7 +199,7 @@ def main():
     # This keeps the harness consistent: it will prefer a built test binary under build/
     # (e.g. build/Release/obfucc.exe on Windows) or the explicit --obfucc override.
     if not Path(obfucc).exists() and shutil.which(obfucc) is None:
-        print(f"INFO: obfucc not found on PATH and no --obfucc provided; attempting to build the test binary into 'build/'.")
+        print("INFO: obfucc not found on PATH and no --obfucc provided; attempting to build the test binary into 'build'.")
         # We'll continue; build_project() below will attempt to produce the binary.
 
     # Build if possible (do this once up-front to avoid per-test repeated builds).
