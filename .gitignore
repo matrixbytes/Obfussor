@@ -43,3 +43,6 @@ Thumbs.db
 
 # Environment
 .env*
+
+# Android Gradle intermediates
+android/app/build/intermediates/
