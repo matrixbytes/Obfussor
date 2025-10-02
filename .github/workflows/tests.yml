@@ -61,30 +61,47 @@ jobs:
       - name: Normalize built obfucc path (Windows)
         if: runner.os == 'Windows'
         run: |
-          # Windows: normalize built obfucc path
-          $dst = Join-Path (Get-Location) 'build\Release\obfucc.exe'
-          $candidates = @(
-            'build\obfucc.exe',
-            'build\bin\obfucc.exe',
-            'build\Release\obfucc_test.exe',
-            'build\obfucc_test.exe'
-          )
-          $found = $null
-          foreach ($p in $candidates) {
-              if (Test-Path $p) { $found = (Resolve-Path $p).ProviderPath; break }
-          }
-          if (-not $found) {
-              Write-Host "No secondary build found; assuming obfucc already exists at $dst"
-          } else {
-              # Only copy if different (case-insensitive)
-              $foundResolved = (Get-Item -LiteralPath $found).FullName.ToLowerInvariant()
-              $dstResolved = if (Test-Path $dst) { (Get-Item -LiteralPath $dst).FullName.ToLowerInvariant() } else { '' }
-              if ($foundResolved -ne $dstResolved) {
-                  Copy-Item -Path $found -Destination $dst -Force
-                  Write-Host "Copied $found -> $dst"
-              } else {
-                  Write-Host "Obfucc already normalized at $dst"
+          # Windows: robustly normalize built obfucc path
+          try {
+            $dst = Join-Path (Get-Location) 'build\Release\obfucc.exe'
+            $candidates = @(
+              'build\obfucc.exe',
+              'build\bin\obfucc.exe',
+              'build\Release\obfucc_test.exe',
+              'build\obfucc_test.exe'
+            )
+            $found = $null
+            foreach ($p in $candidates) {
+              if (Test-Path $p) {
+                $found = (Resolve-Path $p).ProviderPath
+                break
               }
+            }
+            Write-Host "Normalize step: candidate found = '$found'   dst = '$dst'"
+
+            if (-not $found) {
+              Write-Host "No secondary build found; assuming obfucc already exists at $dst"
+            } else {
+              # Normalize both paths using .NET and compare OrdinalIgnoreCase
+              $foundFull = [System.IO.Path]::GetFullPath($found).TrimEnd('\')
+              $dstFull = [System.IO.Path]::GetFullPath($dst).TrimEnd('\')
+              if ($foundFull.Equals($dstFull, [System.StringComparison]::OrdinalIgnoreCase)) {
+                Write-Host "Obfucc already at destination: $dstFull; skipping copy"
+              } else {
+                Write-Host "Copying obfucc: $foundFull -> $dstFull"
+                Copy-Item -Path $found -Destination $dst -Force
+                Write-Host "Copied $found -> $dst"
+              }
+            }
+          } catch {
+            Write-Host "Normalization step encountered an error: $_"
+            Write-Host "Attempting safe copy (best-effort)"
+            if ($found -and $found -ne $dst) {
+              Copy-Item -Path $found -Destination $dst -Force
+              Write-Host "Copied $found -> $dst (fallback)"
+            } else {
+              Write-Host "Skipping copy in fallback: found='$found' dst='$dst'"
+            }
           }
         shell: pwsh
 
@@ -94,7 +111,9 @@ jobs:
           if (-Not (Test-Path "build\Release\obfucc.exe")) {
             Write-Error "Obfucc not built! Check previous build step."
             exit 1
-          } else { Write-Host "Obfucc exists: build\\Release\\obfucc.exe" }
+          } else {
+            Write-Host "Obfucc exists: build\\Release\\obfucc.exe"
+          }
         shell: pwsh
 
       - name: Run smoke tests (Unix)
