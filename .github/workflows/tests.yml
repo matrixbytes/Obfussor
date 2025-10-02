@@ -5,8 +5,18 @@ on:
     branches: [ main ]
     paths-ignore:
       - 'android/**'
+      - 'test_build.ps1'
+      - 'android/BUILD_TESTS.md'
+      - 'README.md'
+      - 'android/README.md'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - 'android/**'
+      - 'test_build.ps1'
+      - 'android/BUILD_TESTS.md'
+      - 'README.md'
+      - 'android/README.md'
 
 jobs:
   test:

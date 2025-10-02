@@ -31,6 +31,10 @@ jobs:
         shell: pwsh
         run: |
           $globalKeystorePath = "$env:USERPROFILE\.android\debug.keystore"
+          $globalKeystoreDir = Split-Path $globalKeystorePath
+          if (-not (Test-Path $globalKeystoreDir)) {
+            New-Item -ItemType Directory -Force -Path $globalKeystoreDir | Out-Null
+          }
           if (-not (Test-Path $globalKeystorePath)) {
             keytool -genkeypair -v -keystore $globalKeystorePath -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000
           }
