@@ -75,3 +75,5 @@ Thumbs.db
 
 # Environment
 .env*
+
+/build-win/
