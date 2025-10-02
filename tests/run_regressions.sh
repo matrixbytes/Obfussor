@@ -19,14 +19,24 @@ declare -a CASES=(
 )
 
 for pair in "${CASES[@]}"; do
-  IFS="::" read -r case check flag <<< "$pair"
+  # Split on literal '::' into case, check, flag
+  rest="$pair"
+  case="${rest%%::*}"
+  rest="${rest#*::}"
+  check="${rest%%::*}"
+  flag="${rest#*::}"
   echo "Running regression case: $case (flag=$flag)"
   if [ "$BUILD_ONLY" -eq 1 ]; then
     echo "--build-only set; skipping test execution. To run tests, invoke without --build-only."
     exit 0
   fi
 
-  python3 "$PYTEST" --mode regression --case "$case" --check "$check" $flag
+  # Pass the flag only if non-empty so it's a separate argv
+  if [ -n "$flag" ]; then
+    python3 "$PYTEST" --mode regression --case "$case" --check "$check" "$flag"
+  else
+    python3 "$PYTEST" --mode regression --case "$case" --check "$check"
+  fi
   echo "=> PASS: $case"
 done
 
