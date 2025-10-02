@@ -27,6 +27,14 @@ jobs:
             keytool -genkeypair -v -keystore $keystorePath -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000
           }
 
+      - name: Ensure global Android debug keystore exists
+        shell: pwsh
+        run: |
+          $globalKeystorePath = "$env:USERPROFILE\.android\debug.keystore"
+          if (-not (Test-Path $globalKeystorePath)) {
+            keytool -genkeypair -v -keystore $globalKeystorePath -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000
+          }
+
       - name: Build APK and check result
         shell: pwsh
         run: |
