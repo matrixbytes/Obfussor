@@ -19,6 +19,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Ensure debug keystore exists
+        shell: pwsh
+        run: |
+          $keystorePath = "android\app\debug.keystore"
+          if (-not (Test-Path $keystorePath)) {
+            keytool -genkeypair -v -keystore $keystorePath -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000
+          }
+
       - name: Build APK and check result
         shell: pwsh
         run: |
