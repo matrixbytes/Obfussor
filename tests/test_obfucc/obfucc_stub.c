@@ -54,11 +54,14 @@ int main(int argc, char** argv) {
         return 4;
     }
     fseek(in, 0, SEEK_SET);
-    char *buf = (char*)malloc((size_t)sz + 1);
-    if (!buf) { fclose(in); return 4; }
-    size_t nread = fread(buf, 1, (size_t)sz, in);
-    if (nread != (size_t)sz) { free(buf); fclose(in); fprintf(stderr, "ERROR: short read\n"); return 4; }
-    buf[sz] = 0;
+    size_t szz = (size_t)sz;
+    size_t in_alloc = szz + 1;
+    if (in_alloc < szz) { fclose(in); fprintf(stderr, "ERROR: input too large\n"); return 4; }
+    char *buf = (char*)malloc(in_alloc);
+    if (!buf) { fclose(in); fprintf(stderr, "ERROR: malloc failed\n"); return 4; }
+    size_t nread = fread(buf, 1, szz, in);
+    if (nread != szz) { free(buf); fclose(in); fprintf(stderr, "ERROR: short read\n"); return 4; }
+    buf[szz] = '\0';
     fclose(in);
 
     if (enable_string_encrypt) {
