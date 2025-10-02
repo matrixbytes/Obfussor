@@ -33,23 +33,35 @@ jobs:
         if: runner.os != 'Windows'
         run: echo "$LLVM_PATH/bin" >> "$GITHUB_PATH"
 
-      - name: Run smoke tests
-        run: |
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            pwsh tests/run_smoke.ps1
-          else
-            bash tests/run_smoke.sh
-          fi
+      - name: Build tiny test obfucc (Unix)
+        if: runner.os != 'Windows'
+        run: python3 tests/runner.py --build-only
         shell: bash
 
-      - name: Run regression tests
-        run: |
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            pwsh tests/run_regressions.ps1
-          else
-            bash tests/run_regressions.sh
-          fi
+      - name: Build tiny test obfucc (Windows)
+        if: runner.os == 'Windows'
+        run: python tests/runner.py --build-only
+        shell: pwsh
+
+      - name: Run smoke tests (Unix)
+        if: runner.os != 'Windows'
+        run: bash tests/run_smoke.sh
         shell: bash
+
+      - name: Run smoke tests (Windows)
+        if: runner.os == 'Windows'
+        run: pwsh -File tests/run_smoke.ps1
+        shell: pwsh
+
+      - name: Run regression tests (Unix)
+        if: runner.os != 'Windows'
+        run: bash tests/run_regressions.sh
+        shell: bash
+
+      - name: Run regression tests (Windows)
+        if: runner.os == 'Windows'
+        run: pwsh -File tests/run_regressions.ps1
+        shell: pwsh
 
   build-only:
     name: Build-only on ${{ matrix.os }}
@@ -77,7 +89,12 @@ jobs:
         if: runner.os != 'Windows'
         run: echo "$LLVM_PATH/bin" >> "$GITHUB_PATH"
 
-      - name: Run build-only harness
-        run: |
-          python tests/runner.py --build-only
+      - name: Run build-only harness (Unix)
+        if: runner.os != 'Windows'
+        run: python3 tests/runner.py --build-only
         shell: bash
+
+      - name: Run build-only harness (Windows)
+        if: runner.os == 'Windows'
+        run: python tests/runner.py --build-only
+        shell: pwsh
