@@ -7,6 +7,7 @@ def getEnvOrDefault(name, defValue) {
 
 android {
     compileSdkVersion 34
+    namespace "com.obfussor.app"
     defaultConfig {
         applicationId "com.obfussor.app"
         minSdkVersion 23
