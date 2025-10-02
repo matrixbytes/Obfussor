@@ -104,9 +104,24 @@ int main(int argc, char** argv) {
             copied_remainder = true;
             break;
         }
-            size_t before = found - p;
-            /* bounds check before writing both the segment and the replacement */
-            if ((size_t)(dst - outbuf) + before + rep_len >= outcap) {
+            size_t before = (size_t)(found - p);
+            size_t used = (size_t)(dst - outbuf);
+            if (used > outcap) {
+                free(buf);
+                free(outbuf);
+                fprintf(stderr, "ERROR: output buffer overflow during replacement\n");
+                return 5;
+            }
+            size_t remaining = outcap - used;
+            if (before > remaining) {
+                free(buf);
+                free(outbuf);
+                fprintf(stderr, "ERROR: output buffer overflow during replacement\n");
+                return 5;
+            }
+            remaining -= before;
+            /* need room for replacement and at least one byte for terminator */
+            if (rep_len >= remaining) {
                 free(buf);
                 free(outbuf);
                 fprintf(stderr, "ERROR: output buffer overflow during replacement\n");
