@@ -128,9 +128,13 @@ jobs:
           if [ -z "$found" ]; then echo "Obfucc not found; searched: ${candidates[*]}"; exit 1; fi
           echo "Found built obfucc at: $found"
           mkdir -p build
-          cp "$found" build/obfucc
+          if [ "$found" != "build/obfucc" ]; then
+            cp "$found" build/obfucc
+            echo "Copied $found -> build/obfucc"
+          else
+            echo "$found is already build/obfucc, skipping copy"
+          fi
           chmod +x build/obfucc
-          echo "Copied $found -> build/obfucc"
         shell: bash
 
       - name: Add obfucc to PATH (Unix)
