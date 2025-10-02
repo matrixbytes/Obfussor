@@ -155,7 +155,13 @@ if (-not $SkipLlvmAs) {
   }
 
   Write-Host "[SMOKE] Validating output IR with llvm-as..."
-  llvm-as minimal.obf.ll -o $null
+  # Use a temporary file for llvm-as output to avoid errors with $null
+  $tmp = Join-Path ([System.IO.Path]::GetTempPath()) ("obfucc_smoke_{0}.bc" -f ([guid]::NewGuid()))
+  try {
+    llvm-as minimal.obf.ll -o $tmp
+  } finally {
+    Remove-Item $tmp -ErrorAction SilentlyContinue
+  }
 } else {
   Write-Host "[SMOKE] Skipping llvm-as validation (SkipLlvmAs set)."
 }

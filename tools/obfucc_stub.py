@@ -21,7 +21,7 @@ def main():
     p.add_argument('--enable-string-encrypt', action='store_true')
     p.add_argument('--enable-cff', action='store_true')
     p.add_argument('input_pos', nargs='?', help='positional input file')
-    args, unknown = p.parse_known_args()
+    args = p.parse_args()
 
     # Determine input and output from either long flags or positional/short flags
     input_path = args.input or args.input_pos

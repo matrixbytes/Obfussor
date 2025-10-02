@@ -72,9 +72,23 @@ def build_project():
     produced = None
     candidates = []
     if os.name == "nt":
-        candidates = [build_dir / "Release" / "obfucc.exe", build_dir / "obfucc.exe", build_dir / "Debug" / "obfucc.exe"]
+        candidates = [
+            build_dir / "Release" / "obfucc.exe",
+            build_dir / "obfucc.exe",
+            build_dir / "Debug" / "obfucc.exe",
+            build_dir / "Release" / "obfucc_test.exe",
+            build_dir / "obfucc_test.exe",
+            build_dir / "Debug" / "obfucc_test.exe",
+        ]
     else:
-        candidates = [build_dir / "Release" / "obfucc", build_dir / "obfucc", build_dir / "Debug" / "obfucc"]
+        candidates = [
+            build_dir / "Release" / "obfucc",
+            build_dir / "obfucc",
+            build_dir / "Debug" / "obfucc",
+            build_dir / "Release" / "obfucc_test",
+            build_dir / "obfucc_test",
+            build_dir / "Debug" / "obfucc_test",
+        ]
 
     found = None
     for c in candidates:
@@ -223,58 +237,71 @@ def main():
     tmp_dir = Path(tempfile.mkdtemp(prefix="obfucc-test-"))
     out_ir = Path(args.out) if args.out else tmp_dir / (case.stem + ".out.ll")
 
-    start = time.time()
-    # Run obfucc with a representative option set for tests. Adjust flags as needed.
-    cmd = [str(obfucc), "--input", str(case), "--output", str(out_ir)]
-    if args.enable_string_encrypt:
-        cmd.append("--enable-string-encrypt")
-    if args.enable_cff:
-        cmd.append("--enable-cff")
-    print(f"Running obfuscator: mode={args.mode} case={case}")
     try:
-        run(cmd)
-    except Exception:
-        print("Obfucc run failed.")
-        sys.exit(5)
-    duration = time.time() - start
-    print(f"Obfuscation completed in {duration:.2f}s, output -> {out_ir}")
-
-    # Validate output IR parses with llvm-as (unless skipped)
-    if not args.skip_llvm_as:
+        # Run obfucc with a representative option set for tests. Adjust flags as needed.
+        start = time.time()
+        cmd = [str(obfucc), "--input", str(case), "--output", str(out_ir)]
+        if args.enable_string_encrypt:
+            cmd.append("--enable-string-encrypt")
+        if args.enable_cff:
+            cmd.append("--enable-cff")
+        print(f"Running obfuscator: mode={args.mode} case={case}")
         try:
-            run([LLVM_AS, str(out_ir), "-o", str(tmp_dir / "out.bc")])
-            print("PASS: output IR parsed by llvm-as")
+            run(cmd)
         except Exception:
-            print("FAIL: llvm-as failed to parse output IR")
-            sys.exit(6)
-    else:
-        print("SKIP: llvm-as validation skipped by --skip-llvm-as")
+            print("Obfucc run failed.")
+            sys.exit(5)
+        duration = time.time() - start
+        print(f"Obfuscation completed in {duration:.2f}s, output -> {out_ir}")
 
-    # If a FileCheck check file provided, run it
-    if args.check and not args.skip_filecheck:
+        # Validate output IR parses with llvm-as (unless skipped)
+        if not args.skip_llvm_as:
+            try:
+                run([LLVM_AS, str(out_ir), "-o", str(tmp_dir / "out.bc")])
+                print("PASS: output IR parsed by llvm-as")
+            except Exception:
+                print("FAIL: llvm-as failed to parse output IR")
+                sys.exit(6)
+        else:
+            print("SKIP: llvm-as validation skipped by --skip-llvm-as")
+
+        # If a FileCheck check file provided, run it
+        if args.check and not args.skip_filecheck:
+            try:
+                fc_cmd = [FILECHECK, str(args.check), "--input-file", str(out_ir)]
+                # If string-encrypt optional checks are used, include the extra prefix
+                if args.enable_string_encrypt:
+                    fc_cmd.extend(["-check-prefixes=CHECK,CHECK-CRYPT"])
+                fc_out = run(fc_cmd, capture=True)
+                print(fc_out)
+                print("PASS: FileCheck assertions passed")
+            except Exception:
+                print("FAIL: FileCheck assertions failed")
+                sys.exit(7)
+        elif args.check and args.skip_filecheck:
+            print("SKIP: FileCheck validation skipped by --skip-filecheck")
+
+        # Basic smoke assertions: `obfucc --help`
         try:
-            fc_out = run([FILECHECK, str(args.check), str(out_ir)], capture=True)
-            print(fc_out)
-            print("PASS: FileCheck assertions passed")
+            run([str(obfucc), "--help"], capture=False)
+            print("PASS: obfucc --help executed with exit code 0")
         except Exception:
-            print("FAIL: FileCheck assertions failed")
-            sys.exit(7)
-    elif args.check and args.skip_filecheck:
-        print("SKIP: FileCheck validation skipped by --skip-filecheck")
+            print("FAIL: obfucc --help failed")
+            sys.exit(8)
 
-    # Basic smoke assertions: `obfucc --help`
-    try:
-        run([str(obfucc), "--help"], capture=False)
-        print("PASS: obfucc --help executed with exit code 0")
-    except Exception:
-        print("FAIL: obfucc --help failed")
-        sys.exit(8)
-
-    # Print some metrics (size, basic entropy heuristic)
-    size_bytes = out_ir.stat().st_size
-    print(f"Output IR size: {size_bytes} bytes")
-    print("Test completed successfully.")
-    sys.exit(0)
+        # Print some metrics (size, basic entropy heuristic)
+        size_bytes = out_ir.stat().st_size
+        print(f"Output IR size: {size_bytes} bytes")
+        print("Test completed successfully.")
+        sys.exit(0)
+    finally:
+        # Best-effort cleanup; keep artifacts only if --out was explicitly set by the user
+        if not args.out:
+            import shutil as _shutil
+            try:
+                _shutil.rmtree(str(tmp_dir))
+            except Exception:
+                pass
 
 
 if __name__ == "__main__":

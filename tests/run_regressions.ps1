@@ -50,8 +50,6 @@ $cases = @(
 
 foreach ($pair in $cases) {
     Write-Host "Running regression case: $($pair.case) (flag=$($pair.flag))"
-    $skipArg = ''
-    if ($SkipLlvmAs -or ($Obfucc -and ($Obfucc -match 'obfucc\.bat|obfucc$'))) { $skipArg = '--skip-llvm-as' }
     # Build argument list for python harness
     $argsList = @($pytest, '--mode', 'regression', '--case', $pair.case, '--check', $pair.check, $pair.flag)
     if ($Obfucc) {

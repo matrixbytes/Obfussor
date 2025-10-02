@@ -8,9 +8,8 @@ project(obfucc_test C)
 
 add_executable(obfucc_test obfucc_stub.c)
 
-# ensure we build a portable exe name on Windows (obfucc_test.exe) but we install/copy as 'obfucc'
-if(WIN32)
-  set_target_properties(obfucc_test PROPERTIES OUTPUT_NAME "obfucc")
-else()
-  set_target_properties(obfucc_test PROPERTIES OUTPUT_NAME "obfucc")
-endif()
+# Set output name to 'obfucc' on all platforms (CMake will append .exe on Windows)
+set_target_properties(obfucc_test PROPERTIES OUTPUT_NAME "obfucc")
+
+# Optionally install the test binary (not required for harness which copies from build/)
+install(TARGETS obfucc_test DESTINATION bin OPTIONAL)
