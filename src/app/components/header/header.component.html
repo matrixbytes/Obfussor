@@ -1,0 +1,29 @@
+<header class="header" [class.sidebar-collapsed]="isCollapsed" data-tauri-drag-region>
+  <div class="header-content">
+    <div class="header-left">
+      <div class="app-title">
+        <h1>{{ title }}</h1>
+      </div>
+    </div>
+    
+    <div class="header-center">
+      <div class="breadcrumb">
+        <!-- Breadcrumb navigation will be added here -->
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <div class="window-controls">
+        <button class="window-btn minimize-btn" (click)="minimizeWindow()" title="Minimize">
+          <span class="icon">−</span>
+        </button>
+        <button class="window-btn maximize-btn" (click)="maximizeWindow()" title="Maximize">
+          <span class="icon">⬜</span>
+        </button>
+        <button class="window-btn close-btn" (click)="closeWindow()" title="Close">
+          <span class="icon">✕</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
