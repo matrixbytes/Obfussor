@@ -1,0 +1,73 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.obfussor.app"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="34" />
+10
+11    <permission
+11-->[androidx.core:core:1.9.0] C:\Users\Usuario\.gradle\caches\transforms-3\44c41a81429c787cf6c442f2271ede8c\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+12        android:name="com.obfussor.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+12-->[androidx.core:core:1.9.0] C:\Users\Usuario\.gradle\caches\transforms-3\44c41a81429c787cf6c442f2271ede8c\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+13        android:protectionLevel="signature" />
+13-->[androidx.core:core:1.9.0] C:\Users\Usuario\.gradle\caches\transforms-3\44c41a81429c787cf6c442f2271ede8c\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+14
+15    <uses-permission android:name="com.obfussor.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+15-->[androidx.core:core:1.9.0] C:\Users\Usuario\.gradle\caches\transforms-3\44c41a81429c787cf6c442f2271ede8c\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+15-->[androidx.core:core:1.9.0] C:\Users\Usuario\.gradle\caches\transforms-3\44c41a81429c787cf6c442f2271ede8c\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+16
+17    <application
+17-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:3:5-12:19
+18        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+18-->[androidx.core:core:1.9.0] C:\Users\Usuario\.gradle\caches\transforms-3\44c41a81429c787cf6c442f2271ede8c\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+19        android:debuggable="true"
+20        android:extractNativeLibs="false"
+21        android:icon="@mipmap/ic_launcher"
+21-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:5:9-43
+22        android:label="Obfussor" >
+22-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:4:9-33
+23        <activity
+23-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:6:5-11:20
+24            android:name="com.obfussor.app.MainActivity"
+24-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:6:15-43
+25            android:exported="true" >
+25-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:6:44-67
+26            <intent-filter>
+26-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:7:13-10:29
+27                <action android:name="android.intent.action.MAIN" />
+27-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:8:17-69
+27-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:8:25-66
+28
+29                <category android:name="android.intent.category.LAUNCHER" />
+29-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:9:17-77
+29-->C:\Users\Usuario\Documents\GitHub\Obfussor\android\app\src\main\AndroidManifest.xml:9:27-74
+30            </intent-filter>
+31        </activity>
+32
+33        <provider
+33-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Usuario\.gradle\caches\transforms-3\33c1879a7b93f9d8d8cab09eb3f7a74f\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+34            android:name="androidx.startup.InitializationProvider"
+34-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Usuario\.gradle\caches\transforms-3\33c1879a7b93f9d8d8cab09eb3f7a74f\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+35            android:authorities="com.obfussor.app.androidx-startup"
+35-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Usuario\.gradle\caches\transforms-3\33c1879a7b93f9d8d8cab09eb3f7a74f\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+36            android:exported="false" >
+36-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Usuario\.gradle\caches\transforms-3\33c1879a7b93f9d8d8cab09eb3f7a74f\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+37            <meta-data
+37-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Usuario\.gradle\caches\transforms-3\33c1879a7b93f9d8d8cab09eb3f7a74f\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+38                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+38-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Usuario\.gradle\caches\transforms-3\33c1879a7b93f9d8d8cab09eb3f7a74f\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+39                android:value="androidx.startup" />
+39-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Usuario\.gradle\caches\transforms-3\33c1879a7b93f9d8d8cab09eb3f7a74f\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+40            <meta-data
+40-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Usuario\.gradle\caches\transforms-3\2c9d4403d72a7a273fe993af5fed50d1\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+41                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+41-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Usuario\.gradle\caches\transforms-3\2c9d4403d72a7a273fe993af5fed50d1\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+42                android:value="androidx.startup" />
+42-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Usuario\.gradle\caches\transforms-3\2c9d4403d72a7a273fe993af5fed50d1\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+43        </provider>
+44    </application>
+45
+46</manifest>

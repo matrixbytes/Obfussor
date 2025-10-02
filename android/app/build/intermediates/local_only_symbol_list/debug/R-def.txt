@@ -1,0 +1,5 @@
+R_DEF: Internal format may change without notice
+local
+layout activity_main
+mipmap ic_launcher
+string app_name

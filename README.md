@@ -4,6 +4,8 @@
 
 Obfucc-LLVM is a high-performance binary obfuscation framework that leverages LLVM's compiler infrastructure to transform source code into hardened, reverse-engineering-resistant binaries. Built for scenarios where intellectual property protection is non-negotiable.
 
+[Android Build Instructions](android/README.md)
+
 ## Feature goals
 
 ### Obfuscation Techniques
