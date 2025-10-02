@@ -19,7 +19,7 @@ Run the following command from the `android` directory:
 You can add a simple script to check that the APK file exists after the build. For example, in PowerShell:
 
 ```powershell
-$apkPath = "android/app/build/outputs/apk/debug/app-debug.apk"
+$apkPath = "app/build/outputs/apk/debug/app-debug.apk"
 if (Test-Path $apkPath) {
     Write-Host "APK build successful: $apkPath exists."
     exit 0
@@ -31,7 +31,7 @@ if (Test-Path $apkPath) {
 
 ## 3. (Optional) Install APK on Device/Emulator
 
-If you have ADB installed and a device/emulator running, you can install the APK:
+If you have ADB installed and a device/emulator running, you can install the APK from the repository root:
 
 ```sh
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
