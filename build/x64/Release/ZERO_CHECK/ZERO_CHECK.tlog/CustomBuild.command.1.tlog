@@ -1,0 +1,10 @@
+^C:\USERS\HP\OBFUSSOR\BUILD\CMAKEFILES\9EA8ECEDC9A1DD63FD9A463DAB454A8C\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/HP/Obfussor/tests/test_obfucc -BC:/Users/HP/Obfussor/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/HP/Obfussor/build/obfucc_test.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

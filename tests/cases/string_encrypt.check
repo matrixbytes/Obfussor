@@ -1,0 +1,6 @@
+# Ensure plaintext is removed from output IR (no literal "SecretString")
+CHECK-NOT: SecretString
+
+# Optionally ensure some decryption symbol exists (adjust to your runtime decrypt name if known)
+# For generic check we look for a function or global that looks like a decrypt name; edit as appropriate:
+# CHECK: @.buck_decrypt

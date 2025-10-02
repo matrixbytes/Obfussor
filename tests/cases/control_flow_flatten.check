@@ -1,0 +1,9 @@
+# Check that control flow flattening produced a dispatcher loop or switch-based dispatcher.
+# This is a conservative check: we look for a switch instruction or a loop with a switch/indirect branch.
+
+# CHECK: switch
+# CHECK: br label
+# CHECK: phi
+
+# Alternatively look for an opaque dispatcher global / variable (pass-specific)
+# CHECK: @dispatcher
