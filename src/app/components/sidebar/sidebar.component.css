@@ -1,0 +1,144 @@
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #1e1e1e;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar-header {
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-weight: 600;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-bottom: 0.25rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: #ccc;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-radius: 0;
+  gap: 0.75rem;
+}
+
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 0.75rem 0.5rem;
+}
+
+.nav-link:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.nav-link.active {
+  background-color: #0d7377;
+  color: #fff;
+  border-right: 3px solid #14a085;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.nav-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid #333;
+  margin-top: auto;
+}
+
+.footer-info {
+  text-align: center;
+}
+
+.footer-info small {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 260px;
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.collapsed {
+    width: 260px;
+    transform: translateX(0);
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+}
