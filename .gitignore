@@ -1,4 +1,36 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# Ignore CMake / build outputs and generated Visual Studio files (do NOT commit build/)
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/install_manifest.txt
+**/*.vcxproj*
+**/*.vcxproj.filters
+**/*.sln
+**/*.user
+**/*.tlog
+**/*.recipe
+**/*.lastbuildstate
+**/*.pdb
+**/*.obj
+**/*.lib
+/.vs/
+/x64/
+/Debug/
+/Release/
+
+# CMake stamps and temporary generator artifacts
+/CMakeFiles/
+/CMakeScripts/
+
+# Python
+__pycache__/
+.venv/
+venv/
+
+# Misc
+*.log
+.DS_Store
 
 # Compiled output
 /dist
