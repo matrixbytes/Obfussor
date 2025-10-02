@@ -184,9 +184,23 @@ def main():
             build_dir = repo_root / 'build'
             candidates = []
             if os.name == 'nt':
-                candidates = [build_dir / 'obfucc.exe', build_dir / 'Release' / 'obfucc.exe', build_dir / 'Debug' / 'obfucc.exe']
+                candidates = [
+                    build_dir / 'obfucc.exe',
+                    build_dir / 'Release' / 'obfucc.exe',
+                    build_dir / 'Debug' / 'obfucc.exe',
+                    build_dir / 'obfucc_test.exe',
+                    build_dir / 'Release' / 'obfucc_test.exe',
+                    build_dir / 'Debug' / 'obfucc_test.exe',
+                ]
             else:
-                candidates = [build_dir / 'obfucc', build_dir / 'Release' / 'obfucc', build_dir / 'Debug' / 'obfucc']
+                candidates = [
+                    build_dir / 'obfucc',
+                    build_dir / 'Release' / 'obfucc',
+                    build_dir / 'Debug' / 'obfucc',
+                    build_dir / 'obfucc_test',
+                    build_dir / 'Release' / 'obfucc_test',
+                    build_dir / 'Debug' / 'obfucc_test',
+                ]
             for c in candidates:
                 if c.exists():
                     obfucc = str(c)

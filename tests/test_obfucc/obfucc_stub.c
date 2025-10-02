@@ -47,8 +47,12 @@ int main(int argc, char** argv) {
     }
     fseek(in, 0, SEEK_END);
     long sz = ftell(in);
+    if (sz < 0) {
+        fclose(in);
+        fprintf(stderr, "ERROR: invalid input size\n");
+        return 4;
+    }
     fseek(in, 0, SEEK_SET);
-    if (sz < 0) { fclose(in); fprintf(stderr, "ERROR: invalid input size\n"); return 4; }
     char *buf = (char*)malloc((size_t)sz + 1);
     if (!buf) { fclose(in); return 4; }
     size_t nread = fread(buf, 1, (size_t)sz, in);
@@ -63,8 +67,14 @@ int main(int argc, char** argv) {
         int rep_len = (int)strlen(replacement);
         // naive in-place replacement: write to a new buffer
     size_t outcap = (size_t)sz + (size_t)rep_len * 8 + 1024;
+    /* detect overflow in capacity calculation */
+    if (outcap < (size_t)sz || outcap < (size_t)rep_len) {
+        free(buf);
+        fprintf(stderr, "ERROR: output buffer size overflow\n");
+        return 5;
+    }
     char *outbuf = (char*)malloc(outcap);
-    if (!outbuf) { free(buf); return 5; }
+    if (!outbuf) { free(buf); fprintf(stderr, "ERROR: malloc failed\n"); return 5; }
     char *dst = outbuf;
     bool copied_remainder = false;
     while (*p) {
@@ -75,6 +85,13 @@ int main(int argc, char** argv) {
             break;
         }
             size_t before = found - p;
+            /* bounds check before writing both the segment and the replacement */
+            if ((size_t)(dst - outbuf) + before + rep_len >= outcap) {
+                free(buf);
+                free(outbuf);
+                fprintf(stderr, "ERROR: output buffer overflow during replacement\n");
+                return 5;
+            }
             memcpy(dst, p, before);
             dst += before;
             memcpy(dst, replacement, rep_len);
