@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Unix shim (non-executable on Windows, but useful for CI/unix)
+python3 "$(dirname "$0")/tools/obfucc_stub.py" "$@"
