@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
             dst += before;
             memcpy(dst, replacement, rep_len);
             dst += rep_len;
-            p = found + strlen(needle);
+            p = found + needle_len;
         }
         if (!copied_remainder) {
             /* ensure the buffer is NUL terminated before calling strlen */
