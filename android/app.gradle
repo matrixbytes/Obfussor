@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+def getEnvOrDefault(name, defValue) {
+    def v = System.getenv(name)
+    return v != null ? v : defValue
+}
+
+android {
+    compileSdkVersion 34
+    defaultConfig {
+        applicationId "com.obfussor.app"
+        minSdkVersion 23
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+    }
+    signingConfigs {
+        debug {
+            storeFile file(getEnvOrDefault('DEBUG_KEYSTORE', "${System.properties['user.home']}/.android/debug.keystore"))
+            storePassword getEnvOrDefault('DEBUG_KEYSTORE_PASSWORD', 'android')
+            keyAlias getEnvOrDefault('DEBUG_KEY_ALIAS', 'androiddebugkey')
+            keyPassword getEnvOrDefault('DEBUG_KEY_PASSWORD', 'android')
+        }
+        release {
+            storeFile file(getEnvOrDefault('RELEASE_KEYSTORE', ''))
+            storePassword getEnvOrDefault('RELEASE_KEYSTORE_PASSWORD', '')
+            keyAlias getEnvOrDefault('RELEASE_KEY_ALIAS', '')
+            keyPassword getEnvOrDefault('RELEASE_KEY_PASSWORD', '')
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+}
