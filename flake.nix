@@ -1,87 +1,79 @@
 {
-  description = "Tauri development environment";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    unstablePkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    rust-overlay.url = "github:oxalica/rust-overlay";
+    nix-playwright-browsers.url = "github:voidus/nix-playwright-browsers";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs = {
+        nixpkgs.follows = "unstablePkgs";
+      };
+    };
   };
+  outputs = { self, unstablePkgs, nixpkgs, flake-utils, rust-overlay, nix-playwright-browsers }:
+    flake-utils.lib.eachDefaultSystem
+      (system:
+        let
+          overlays = [ (import rust-overlay) ];
+          unstable = import unstablePkgs {
+            inherit system overlays;
+          };
+          pkgs = import nixpkgs {
+            system = system;
+            overlays = [ nix-playwright-browsers.overlays.${system}.default ];
+          };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-    rust-overlay,
-  }:
-    flake-utils.lib.eachDefaultSystem (system: let
+          rustToolchain = unstable.pkgsBuildHost.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
 
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ rust-overlay.overlays.default ];
-      };
-      llvmPkgs = pkgs.llvmPackages_latest;
-
-    in {
-      devShells.default = pkgs.mkShell {
-        nativeBuildInputs = with pkgs; [
-          pkg-config
-          cmake
-          ninja
-
-          # explicit LLVM derivations
-          llvmPkgs.clang
-          llvmPkgs.llvm
-          llvmPkgs.lld
-          mold
-
-          rustc
-          cargo
-          cargo-tauri
-          nodejs
-          bun
-          openjdk17
-
-          python3
-          clang-tools
-        ];
-
-        buildInputs = with pkgs; [
-          gtk3
-          webkitgtk_4_1
-          openssl
-          librsvg
-          libsoup_3
-
-          # explicit runtime GUI deps
-          pango
-          cairo
-          gdk-pixbuf
-          glib
-          harfbuzz
-        ];
-        
-        shellHook = ''
-          # Essential library path
-          export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath (with pkgs; [
-            at-spi2-atk
-            atkmm
-            cairo
-            gdk-pixbuf
-            glib
+          common = with pkgs; [
             gtk3
-            gtk4
-            harfbuzz
+            glib
+            glib-networking
+            dbus
+            openssl_3
             librsvg
-            libsoup_3
-            pango
+            gettext
+            libiconv
+            libsoup_2_4
             webkitgtk_4_1
-            openssl
-          ])}:$LD_LIBRARY_PATH"
-          # OpenSSL
-          export OPENSSL_INCLUDE_DIR="${pkgs.openssl.dev}/include"
-          export OPENSSL_LIB_DIR="${pkgs.openssl.out}/lib"
-          echo "🦀 Tauri Environment is Ready"
-        '';
-      };
-    });
+            nodejs_22
+            bun
+            corepack_22
+            pkgs.playwright-browsers_v1_47_0
+          ];
+
+          # runtime Deps
+          libraries = with pkgs; [
+            cairo
+            pango
+            harfbuzz
+            gdk-pixbuf
+          ] ++ common;
+
+          # compile-time deps
+          packages = with pkgs; [
+            curl
+            wget
+            pkg-config
+            rustToolchain
+          ] ++ common;
+        in
+        {
+          devShells.default = pkgs.mkShell {
+            nativeBuildInputs = packages;
+            buildInputs = libraries;
+            shellHook = ''
+              LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath libraries}:$LD_LIBRARY_PATH
+              XDG_DATA_DIRS=${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}:$XDG_DATA_DIRS
+              GIO_MODULE_DIR=${pkgs.glib-networking.out}/lib/gio/modules/
+              GIO_EXTRA_MODULES=${pkgs.glib-networking.out}/lib/gio/modules/
+
+              PLAYWRIGHT_BROWSERS_PATH=${pkgs.playwright-browsers_v1_47_0}
+              PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+              PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true
+            '';
+          };
+        }
+      );
 }
