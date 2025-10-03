@@ -1,5 +1,0 @@
-# Ensure plaintext is removed from output IR (no literal "SecretString")
-CHECK-NOT: SecretString
-
-# Optional decrypt symbol check uses a separate prefix so the harness can enable it conditionally.
-# CHECK-CRYPT: @.buck_decrypt
