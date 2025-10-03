@@ -1,0 +1,9 @@
+{
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+        "Angular.ng-template",
+		"rust-lang.rust-analyzer",
+		"esbenp.prettier-vscode",
+		"jnoortheen.nix-ide"
+	]
+}
