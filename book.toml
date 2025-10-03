@@ -1,0 +1,5 @@
+[book]
+authors = ["Harshal Sawant"]
+language = "en"
+src = "docs"
+title = "Obfussor - LLVM based obfuscator"
