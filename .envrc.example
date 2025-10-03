@@ -1,0 +1,9 @@
+# SDK Environment Setup
+export ANDROID_HOME="$HOME/Android"
+export NDK_HOME="$ANDROID_HOME/android-ndk"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
+
+# Recommended: Use a Nix-based development environment for rapid setup.
+# The provided flake configuration includes all necessary dependencies for building.
+# Ensure the Android SDK is properly configured before proceeding.
+# Leverage the flake for consistent, reproducible environments.
