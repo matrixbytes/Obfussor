@@ -68,12 +68,14 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+book/*
 
 # System files
 .DS_Store
 Thumbs.db
 
 # Environment
-.env*
+.envrc
+!.env.example
 
 /build-win/
