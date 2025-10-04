@@ -14,7 +14,7 @@ interface MenuItem {
   standalone: true,
   imports: [RouterModule, CommonModule],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
   @Output() sidebarToggle = new EventEmitter<boolean>();
@@ -24,7 +24,7 @@ export class SidebarComponent {
     { label: 'Projects', icon: '📁', route: '/projects' },
     { label: 'Obfuscation Settings', icon: '⚙️', route: '/settings' },
     { label: 'Build', icon: '🔨', route: '/build' },
-    { label: 'Reports', icon: '📈', route: '/reports' }
+    { label: 'Reports', icon: '📈', route: '/reports' },
   ];
 
   isCollapsed = false;
@@ -35,7 +35,7 @@ export class SidebarComponent {
   }
 
   setActive(item: MenuItem) {
-    this.menuItems.forEach(menuItem => menuItem.active = false);
+    this.menuItems.forEach((menuItem) => (menuItem.active = false));
     item.active = true;
   }
 }

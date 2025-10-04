@@ -132,12 +132,12 @@
     width: 260px;
     transform: translateX(-100%);
   }
-  
+
   .sidebar.collapsed {
     width: 260px;
     transform: translateX(0);
   }
-  
+
   .sidebar.mobile-open {
     transform: translateX(0);
   }

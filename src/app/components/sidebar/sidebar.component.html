@@ -7,12 +7,12 @@
       <span class="toggle-icon">{{ isCollapsed ? '▶' : '◀' }}</span>
     </button>
   </div>
-  
+
   <nav class="sidebar-nav">
     <ul class="nav-list">
       <li class="nav-item" *ngFor="let item of menuItems">
-        <a 
-          [routerLink]="item.route" 
+        <a
+          [routerLink]="item.route"
           class="nav-link"
           [class.active]="item.active"
           (click)="setActive(item)"
@@ -24,7 +24,7 @@
       </li>
     </ul>
   </nav>
-  
+
   <div class="sidebar-footer" *ngIf="!isCollapsed">
     <div class="footer-info">
       <small>v1.0.0</small>

@@ -8,7 +8,7 @@ import { HeaderComponent } from '../header/header.component';
   standalone: true,
   imports: [RouterOutlet, SidebarComponent, HeaderComponent],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+  styleUrl: './layout.component.css',
 })
 export class LayoutComponent {
   isCollapsed = false;
