@@ -6,12 +6,12 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent {
   @Input() isCollapsed = false;
   title = 'Obfussor';
-  
+
   minimizeWindow() {
     // Tauri window minimize functionality
     if (typeof window !== 'undefined' && (window as any).__TAURI__) {

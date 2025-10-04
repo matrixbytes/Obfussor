@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -40,25 +41,44 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   font-weight: 600;
   line-height: 1.2;
 }
 
-h1 { font-size: 2rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.25rem; }
-h4 { font-size: 1.1rem; }
-h5 { font-size: 1rem; }
-h6 { font-size: 0.9rem; }
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+h4 {
+  font-size: 1.1rem;
+}
+h5 {
+  font-size: 1rem;
+}
+h6 {
+  font-size: 0.9rem;
+}
 
 p {
   margin: 0 0 1rem 0;
 }
 
 /* Form elements dark theme */
-input, textarea, select {
+input,
+textarea,
+select {
   background-color: #2d2d2d;
   border: 1px solid #404040;
   color: #fff;
@@ -68,7 +88,9 @@ input, textarea, select {
   font-size: inherit;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border-color: #0d7377;
   box-shadow: 0 0 0 2px rgba(13, 115, 119, 0.2);
@@ -83,15 +105,31 @@ button {
 }
 
 /* Utility classes */
-.text-primary { color: #14a085; }
-.text-secondary { color: #ccc; }
-.text-success { color: #27ae60; }
-.text-warning { color: #f39c12; }
-.text-danger { color: #e74c3c; }
+.text-primary {
+  color: #14a085;
+}
+.text-secondary {
+  color: #ccc;
+}
+.text-success {
+  color: #27ae60;
+}
+.text-warning {
+  color: #f39c12;
+}
+.text-danger {
+  color: #e74c3c;
+}
 
-.bg-primary { background-color: #0d7377; }
-.bg-secondary { background-color: #2d2d2d; }
-.bg-dark { background-color: #1a1a1a; }
+.bg-primary {
+  background-color: #0d7377;
+}
+.bg-secondary {
+  background-color: #2d2d2d;
+}
+.bg-dark {
+  background-color: #1a1a1a;
+}
 
 /* Animation utilities */
 .fade-in {
@@ -99,8 +137,14 @@ button {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Loading states */

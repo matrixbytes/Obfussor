@@ -118,6 +118,32 @@ The following scripts are available in `package.json`:
 - `bun ng` - Run Angular CLI commands
 - `cargo tauri` - Run Tauri CLI commands
 
+### Code Quality Tools
+
+The project includes ESLint and Prettier for maintaining code quality and consistency:
+
+#### Linting
+```bash
+# Check for linting issues
+npm run lint
+
+# Auto-fix linting issues
+npm run lint:fix
+```
+
+#### Code Formatting
+```bash
+# Format all code files
+npm run format
+
+# Check if code is properly formatted
+npm run format:check
+```
+
+#### Configuration Files
+- `eslint.config.js` - ESLint configuration with TypeScript and Angular support
+- `.prettierrc` - Prettier configuration for consistent code formatting
+
 ### Testing
 
 Currently, the project doesn't have automated tests configured. Contributions to add testing infrastructure are welcome!
@@ -242,17 +268,22 @@ If you encounter issues not covered here:
 
 ### Code Style
 
-- **TypeScript/Angular**: Follow Angular style guide
+- **TypeScript/Angular**: Follow Angular style guide and use ESLint/Prettier for consistency
 - **Rust**: Use `cargo fmt` to format code before committing
 - **Commits**: Use conventional commit messages
+- **Formatting**: All code must pass `npm run lint` and `npm run format:check`
 
 ### Before Submitting
 
 1. Ensure your code builds successfully: `cargo tauri build`
 2. Test your changes in development mode: `cargo tauri dev`
-3. Format your code:
+3. Run code quality checks:
+   - Lint your code: `npm run lint`
+   - Format your code: `npm run format`
    - Rust: `cargo fmt`
-   - TypeScript: Format using your IDE or prettier
+4. Ensure all checks pass:
+   - `npm run lint` (no errors)
+   - `npm run format:check` (all files properly formatted)
 
 ### Pull Request Process
 
