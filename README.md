@@ -25,8 +25,8 @@
 ![Top Language](https://img.shields.io/github/languages/top/matrixbytes/Obfussor)
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fmatrixbytes.github.io%2FObfussor%2F)
 
-</div>
 ![Obfucc](./assets/llvm-obfucc.png)
+</div>
 
 Obfussor - LLVM is a high-performance binary obfuscation framework that leverages LLVM's compiler infrastructure to transform source code into hardened, reverse-engineering-resistant binaries. Built for scenarios where intellectual property protection is non-negotiable.
 
