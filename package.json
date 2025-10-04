@@ -1,16 +1,15 @@
 {
   "name": "obfucc",
   "version": "0.1.0",
-  "scripts": {
+    "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "tauri": "tauri",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix",
-    "format": "prettier --write \"src/**/*.{ts,html,css,scss}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,html,css,scss}\""
+    "build:prod": "ng build --configuration production",
+    "build:dev": "ng build --configuration development",
+    "analyze": "ng build --stats-json && npx webpack-bundle-analyzer dist/obfucc/stats.json",
+    "tauri": "tauri"
   },
   "private": true,
   "dependencies": {
