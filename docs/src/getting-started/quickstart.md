@@ -292,10 +292,13 @@ obfussor-cli obfuscate \
 Obfuscate each file separately and link:
 
 ```bash
-# Obfuscate each source file
-obfussor-cli obfuscate --input file1.c --output file1_obf.o --ir-only
-obfussor-cli obfuscate --input file2.c --output file2_obf.o --ir-only
+# Obfuscate each source file to LLVM IR
+obfussor-cli obfuscate --input file1.c --output file1_obf.ll --ir-only
+obfussor-cli obfuscate --input file2.c --output file2_obf.ll --ir-only
 
+# Compile IR files to object files
+clang -c file1_obf.ll -o file1_obf.o
+clang -c file2_obf.ll -o file2_obf.o
 # Link obfuscated object files
 clang file1_obf.o file2_obf.o -o program_obfuscated
 ```
