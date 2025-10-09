@@ -1,0 +1,20 @@
+[book]
+title = "Obfussor Documentation"
+authors = ["c0d3h01"]
+description = "Complete guide to LLVM-based code obfuscation using Obfussor"
+language = "en"
+multilingual = false
+src = "docs/src"
+
+[output.html]
+default-theme = "rust"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/matrixbytes/Obfussor"
+git-repository-icon = "fa-github"
+
+[output.html.search]
+enable = true
+
+[output.html.fold]
+enable = true
+level = 0
