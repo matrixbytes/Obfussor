@@ -24,18 +24,16 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: setup bun
-              uses: oven-sh/setup-bun@v2
-              with:
-                bun-version: "latest"
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
 
             - name: install Rust stable
               uses: dtolnay/rust-toolchain@stable
               with:
                   targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-            - name: install frontend dependencies
-              run: bun install
+            - name: install dependencies
+              run: pnpm install
 
             - name: import Apple Developer Certificate
               # Prevents keychain from locking automatically for 3600 seconds.

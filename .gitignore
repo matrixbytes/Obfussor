@@ -1,81 +1,10 @@
-# Ignore CMake / build outputs and generated Visual Studio files (do NOT commit build/)
-/build/
-/CMakeFiles/
-/CMakeCache.txt
-/cmake_install.cmake
-/install_manifest.txt
-**/*.vcxproj*
-**/*.vcxproj.filters
-**/*.sln
-**/*.user
-**/*.tlog
-**/*.recipe
-**/*.lastbuildstate
-**/*.pdb
-**/*.obj
-**/*.lib
-/.vs/
-/x64/
-/Debug/
-/Release/
-
-# CMake stamps and temporary generator artifacts
-/CMakeFiles/
-/CMakeScripts/
-
-# Python
-__pycache__/
-.venv/
-venv/
-
-# Misc
-*.log
 .DS_Store
-
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
-
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
-
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
-
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-book/*
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Environment
-.envrc
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
 !.env.example
-
-/build-win/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

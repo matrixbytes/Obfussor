@@ -1,6 +1,0 @@
-/* App component styles - now using layout component */
-:host {
-  display: block;
-  height: 100vh;
-  overflow: hidden;
-}
