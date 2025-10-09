@@ -3,9 +3,7 @@ name: "Auto release"
 on:
     push:
         branches:
-            - release
-
-# On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
+            - master
 
 jobs:
     publish-tauri:
@@ -30,6 +28,8 @@ jobs:
 
             - name: Install pnpm
               uses: pnpm/action-setup@v4
+              with:
+                  version: 10
 
             - name: install Rust stable
               uses: dtolnay/rust-toolchain@stable
